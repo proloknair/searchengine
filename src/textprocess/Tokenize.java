@@ -15,10 +15,10 @@ public class Tokenize {
 			
 			while((line=br.readLine())!=null)
 			{
-				Matcher m = Pattern.compile("\\w+").matcher(line);
+				Matcher m = Pattern.compile("[a-zA-Z0-9]+").matcher(line);
 				while(m.find())
 				{
-					tokenslist.add(m.group());
+					tokenslist.add(m.group().toLowerCase());
 				}
 			}
 			
