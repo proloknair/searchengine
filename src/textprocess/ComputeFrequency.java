@@ -50,21 +50,28 @@ public class ComputeFrequency {
 	{
 		Map<String,Integer> freqcount_palindromes=new LinkedHashMap<String,Integer>();
 		int noOfTokens=tokens.size();
+	
 		for(int i=0;i<noOfTokens-5;i++)
 		{
-			String strPal="";
-			for(int j=i;j<i+5;j++)
+			StringBuilder strPal=new StringBuilder("");//String takes n square to concatenate,stringbuilder does in linear time
+			
+			for(int j=i;j<noOfTokens;j++)
 			{
-				strPal=strPal+tokens.get(j);
+				strPal=strPal.append(" ").append(tokens.get(j));
+				
 				if(palindromecheck(strPal))
 				{
-					if(freqcount_palindromes.containsKey(strPal))
+					String strPal_temp=strPal.toString().trim();
+					if(strPal_temp.length()!=1)
 					{
-						freqcount_palindromes.put((strPal),freqcount_palindromes.get(strPal)+1);//Palindrome already present,increase the count
-					}
-					else
-					{
-						freqcount_palindromes.put(strPal, 1);//new palindrome, count assigned to 1
+						if(freqcount_palindromes.containsKey(strPal_temp))
+						{
+							freqcount_palindromes.put((strPal_temp),freqcount_palindromes.get(strPal_temp)+1);//Palindrome already present,increase the count
+						}
+						else
+						{
+							freqcount_palindromes.put(strPal_temp, 1);//new palindrome, count assigned to 1
+						}
 					}
 				}
 			}
@@ -73,15 +80,24 @@ public class ComputeFrequency {
 		
 		return freqcount_palindromes;
 	}
-	private static boolean palindromecheck(String str)
+	private static boolean palindromecheck(StringBuilder str)
 	{
 		int length=str.length();
-		for(int i=0;i<length/2;i++)
+	
+		
+		int i=0,j=length-1;
+		while(i<j)
 		{
-			if(str.charAt(i)!=str.charAt(length-i-1))
+			if(str.charAt(i)==' ')
+				i++;
+			if(str.charAt(j)==' ')
+				j--;
+			if(str.charAt(i)!=str.charAt(j))
 			{
 				return false;
 			}
+			i++;
+			j--;
 				
 		}
 		return true;
