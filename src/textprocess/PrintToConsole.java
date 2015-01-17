@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 public class PrintToConsole {
-	void print(List<String> tokenlist)
+	public static void print(List<String> tokenlist)
 	{
 		for(String str:tokenlist)
 		{
@@ -15,7 +15,7 @@ public class PrintToConsole {
 		}
 		
 	}
-	void print(Map<String,Integer> fcount)
+	public static void print(Map<String,Integer> fcount)
 	{
 		List<Map.Entry<String,Integer>> list = new LinkedList<>( fcount.entrySet() );//converting the frequency list into Linked-list.
 	    Collections.sort( list, new Comparator<Map.Entry<String,Integer>>()

@@ -1,5 +1,6 @@
 package textprocess;
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.FileInputStream;
@@ -11,7 +12,7 @@ import java.util.regex.Pattern;
 
 
 public class Tokenize {
-	List<String> tokenizeFile(String TextFile) throws IOException
+	public static List<String> tokenizeFile(String TextFile) throws IOException
 	{
 		List<String> tokenslist=new ArrayList<String>();
 		BufferedReader br=null;
@@ -33,7 +34,13 @@ public class Tokenize {
 		}catch(IOException e)
 		{
 			e.printStackTrace();
+			if(e instanceof FileNotFoundException)
+			{
+				System.out.println("File Not Found");
+			}
+			
 		}
+		
 		finally {
 			try {
 				if (br != null)br.close();
@@ -47,12 +54,11 @@ public class Tokenize {
 	
 	
 	public static void main(String[] args) throws IOException {
-		Tokenize tok = new Tokenize();
-		ComputeFrequency freq=new ComputeFrequency();
-		PrintToConsole prnt=new PrintToConsole();
-		List<String> tokens=tok.tokenizeFile("/Users/proloknair/Dropbox/IR-Proj/SearchEngine/Text.txt");
-		Map<String,Integer> fcount_palindrome=freq.computePalindromeFrequencies(tokens);
-		prnt.print(fcount_palindrome);
+		
+		List<String> tokens=Tokenize.tokenizeFile("/Users/proloknair/Dropbox/IR-Proj/SearchEngine/Text.txt");
+		Map<String,Integer> fcount=ComputeFrequency.computePalindromeFrequencies(tokens);
+		PrintToConsole.print(fcount);
+		
 
 	}
 

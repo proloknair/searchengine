@@ -5,7 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ComputeFrequency {
-	Map<String,Integer> computeWordFrequencies(List<String> tokenlist)
+	public static Map<String,Integer> computeWordFrequencies(List<String> tokenlist)
 	{
 		Map<String,Integer> freqcount=new LinkedHashMap<String,Integer>();
 		for(String str:tokenlist)
@@ -24,7 +24,7 @@ public class ComputeFrequency {
 			    
 		return freqcount;
 	}
-	Map<String,Integer> computeTwoGramFrequencies(List<String> tokens)
+	public static Map<String,Integer> computeTwoGramFrequencies(List<String> tokens)
 	{
 		Map<String,Integer> freqcount_2gram=new LinkedHashMap<String,Integer>();
 		for(int i=0;i<tokens.size()-1;i++)
@@ -46,15 +46,44 @@ public class ComputeFrequency {
 		
 		
 	}
-	Map<String,Integer> computePalindromeFrequencies(List<String> tokens)
+	public static Map<String,Integer> computePalindromeFrequencies(List<String> tokens)
 	{
 		Map<String,Integer> freqcount_palindromes=new LinkedHashMap<String,Integer>();
 		int noOfTokens=tokens.size();
-		for(int i=0;i<noOfTokens;i++)
+		for(int i=0;i<noOfTokens-5;i++)
 		{
+			String strPal="";
+			for(int j=i;j<i+5;j++)
+			{
+				strPal=strPal+tokens.get(j);
+				if(palindromecheck(strPal))
+				{
+					if(freqcount_palindromes.containsKey(strPal))
+					{
+						freqcount_palindromes.put((strPal),freqcount_palindromes.get(strPal)+1);//Palindrome already present,increase the count
+					}
+					else
+					{
+						freqcount_palindromes.put(strPal, 1);//new palindrome, count assigned to 1
+					}
+				}
+			}
 			
 		}
 		
 		return freqcount_palindromes;
+	}
+	private static boolean palindromecheck(String str)
+	{
+		int length=str.length();
+		for(int i=0;i<length/2;i++)
+		{
+			if(str.charAt(i)!=str.charAt(length-i-1))
+			{
+				return false;
+			}
+				
+		}
+		return true;
 	}
 }
