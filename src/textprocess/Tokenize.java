@@ -7,15 +7,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.stream.Stream;
-
 
 
 public class Tokenize {
@@ -70,6 +66,28 @@ public class Tokenize {
 			    
 		return freqcount;
 	}
+	Map<String,Integer> computeTwoGramFrequencies(List<String> tokens)
+	{
+		Map<String,Integer> freqcount_2gram=new HashMap<String,Integer>();
+		for(int i=0;i<tokens.size()-1;i++)
+		{
+			String str=tokens.get(i)+" "+tokens.get(i+1);
+			if(freqcount_2gram.containsKey(str))
+			{
+				freqcount_2gram.put((str),freqcount_2gram.get(str)+1);
+			}
+			else
+			{
+				freqcount_2gram.put(str, 1);
+			}
+		}
+		 
+		 
+			    
+		return freqcount_2gram;
+		
+		
+	}
 	void print(List<String> tokenlist)
 	{
 		for(String str:tokenlist)
@@ -102,7 +120,7 @@ public class Tokenize {
 	public static void main(String[] args) throws IOException {
 		Tokenize tok = new Tokenize();
 		List<String> tokens=tok.tokenizeFile("/Users/proloknair/Dropbox/IR-Proj/SearchEngine/Text.txt");
-		Map<String,Integer> fcount=tok.computeWordFrequencies(tokens);
+		Map<String,Integer> fcount=tok.computeTwoGramFrequencies(tokens);
 		tok.print(fcount);
 
 	}
