@@ -1,7 +1,31 @@
-Roger Federer is a Swiss professional tennis player who is currently ranked world No. 2 by the Association of Tennis Professionals. Most commentators and players regard Federer as the greatest tennis player of all time. Wikipedia
-Born: August 8, 1981 (age 33), Basel, Switzerland
-Grand slams won (singles): 17
-Spouse: Mirka Federer (m. 2009)
-Children: Myla Rose Federer, Lenny Federer, Charlene Riva Federer, Leo Federer
-Parents: Lynette Federer, Robert Federer
-Siblings: Diana Federer
+What if you want to print members of a specified sex, or a combination of a specified gender and age range? What if you decide to change the Person class and add other attributes such as relationship status or geographical location? Although this method is more generic than printPersonsOlderThan, trying to create a separate method for each possible search query can still lead to brittle code. You can instead separate the code that specifies the criteria for which you want to search in a different class.
+
+Approach 3: Specify Search Criteria Code in a Local Class
+
+The following method prints members that match search criteria that you specify:
+
+public static void printPersons(
+    List<Person> roster, CheckPerson tester) {
+    for (Person p : roster) {
+        if (tester.test(p)) {
+            p.printPerson();
+        }
+    }
+}
+This method checks each Person instance contained in the List parameter roster whether it satisfies the search criteria specified in the CheckPerson parameter tester by invoking the method tester.test. If the method tester.test returns a true value, then the method printPersons is invoked on the Person instance.
+
+To specify the search criteria, you implement the CheckPerson interface:
+
+interface CheckPerson {
+    boolean test(Person p);
+}
+The following class implements the CheckPerson interface by specifying an implementation for the method test. This method filters members that are eligible for Selective Service in the United States: it returns a true value if its Person parameter is male and between the ages of 18 and 25:
+
+class CheckPersonEligibleForSelectiveService implements CheckPerson {
+    public boolean test(Person p) {
+        return p.gender == Person.Sex.MALE &&
+            p.getAge() >= 18 &&
+            p.getAge() <= 25;
+    }
+}
+1
