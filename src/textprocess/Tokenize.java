@@ -54,11 +54,14 @@ public class Tokenize {
 	
 	
 	public static void main(String[] args) throws IOException {
-		
+		long startTime = System.nanoTime();
 		List<String> tokens=Tokenize.tokenizeFile("/Users/proloknair/Dropbox/IR-Proj/SearchEngine/Text.txt");
 		Map<String,Integer> fcount=ComputeFrequency.computePalindromeFrequencies(tokens);
 		PrintToConsole.print(fcount);
 		
+		
+		long endTime = System.nanoTime();
+		System.out.println("Took "+(endTime - startTime) + " ns"); 
 
 	}
 

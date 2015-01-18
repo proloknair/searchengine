@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 
 public class ComputeFrequency {
+	private static int longestpalindrome=17826; //length of the longest existing palindrome phrase
 	public static Map<String,Integer> computeWordFrequencies(List<String> tokenlist)
 	{
 		Map<String,Integer> freqcount=new LinkedHashMap<String,Integer>();
@@ -51,18 +52,20 @@ public class ComputeFrequency {
 		Map<String,Integer> freqcount_palindromes=new LinkedHashMap<String,Integer>();
 		int noOfTokens=tokens.size();
 	
-		for(int i=0;i<noOfTokens-5;i++)
+		for(int i=0;i<noOfTokens;i++)
 		{
 			StringBuilder strPal=new StringBuilder("");//String takes n square to concatenate,stringbuilder does in linear time
 			
 			for(int j=i;j<noOfTokens;j++)
 			{
-				strPal=strPal.append(" ").append(tokens.get(j));
+				if((j-i)>longestpalindrome)
+					break;
+				strPal.append(" ").append(tokens.get(j));
 				
 				if(palindromecheck(strPal))
 				{
-					String strPal_temp=strPal.toString().trim();
-					if(strPal_temp.length()!=1)
+					String strPal_temp=strPal.toString().trim();//converting the stringbuilder back to string(only the palindromes are converted)
+					if(strPal_temp.length()!=1)// single letter words are eliminated
 					{
 						if(freqcount_palindromes.containsKey(strPal_temp))
 						{
