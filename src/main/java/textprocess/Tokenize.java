@@ -50,9 +50,20 @@ public class Tokenize {
 		}
 		return tokenslist;
 	}
-
+	public static List<String> tokenizeString(String text) throws IOException
+	{
+		List<String> tokenslist=new ArrayList<String>();
+		Matcher m;
+				m = Pattern.compile("[a-zA-Z0-9]+").matcher(text); //using regex to find all the tokens
+				while(m.find())
+				{
+					tokenslist.add(m.group().toLowerCase()); //adding everything to tokenlist
+				}
+			
+		return tokenslist;
+	}
 	
-	
+	/*
 	public static void main(String[] args) throws IOException {
 		long startTime = System.nanoTime();
 		List<String> tokens=Tokenize.tokenizeFile("/Users/proloknair/Dropbox/IR-Proj/SearchEngine/Text.txt");
@@ -62,6 +73,6 @@ public class Tokenize {
 		long endTime = System.nanoTime();
 		System.out.println("Took "+(endTime - startTime) + " ns"); 
 
-	}
+	}*/
 
 }
