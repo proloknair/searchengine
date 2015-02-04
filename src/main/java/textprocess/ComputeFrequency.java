@@ -26,6 +26,7 @@ public class ComputeFrequency {
 			    
 		return freqcount;
 	}
+	
 	public static Map<String,Integer> computeTwoGramFrequencies(List<String> tokens)
 	{
 		Map<String,Integer> freqcount_2gram=new LinkedHashMap<String,Integer>();

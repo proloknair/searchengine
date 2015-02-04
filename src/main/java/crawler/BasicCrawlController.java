@@ -106,5 +106,6 @@ public class BasicCrawlController {
     controller.start(BasicCrawler.class, numberOfCrawlers);
     Subdomain.aggregatestore();
     Document.getMapReduceWord();
+    Document.getMapReduce2gram();
   }
 }

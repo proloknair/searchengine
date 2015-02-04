@@ -25,6 +25,12 @@ import com.mongodb.MapReduceOutput;
 import com.mongodb.util.JSON;
 
 public class Document {
+	private static final String document="document";
+	private static final String gram="gram";
+	private static final String word="word";
+	private static final String twogram="twogram";
+	private static final String wordcoll="wordcounts";
+	private static final String gramscoll="gramscount";
 	
 	public static void addDocument(String url,String text) throws Exception
 	{
@@ -34,26 +40,24 @@ public class Document {
 		 
 		 List<String> tokens=Tokenize.tokenizeString(text);
 		 Map<String,Integer> freq=ComputeFrequency.computeWordFrequencies(tokens);
-		  
-		 
+		 Map<String,Integer> freq2gram=ComputeFrequency.computeTwoGramFrequencies(tokens);
 		 
 		 StringBuilder dson=new StringBuilder("{'url':'"+url+"',");
-		 dson.append(addfreq(freq)).append("}");
+		 dson.append(addfreq(freq,document,word)).append(",").append(addfreq(freq2gram,gram,twogram)).append("}");
 		 BasicDBObject query=(BasicDBObject) JSON.parse(dson.toString());
 		 
 		 
 		 coll.insert(query);
 	}
-	private static String addfreq(Map<String,Integer> fcount)
+	private static String addfreq(Map<String,Integer> fcount,String name,String nestedname)
 	{
 		
-		
 		Iterator<Entry<String, Integer>> it =fcount.entrySet().iterator();
-		StringBuilder dson=new StringBuilder("'document':[");
+		StringBuilder dson=new StringBuilder("'"+name+"':[");
 		
 	    while (it.hasNext()) {
 	        Map.Entry<String,Integer> pairs = (Map.Entry<String,Integer>)it.next();
-	        dson.append("{'word':'"+pairs.getKey()+"', 'count':"+pairs.getValue()+"},");
+	        dson.append("{'"+nestedname+"':'"+pairs.getKey()+"', 'count':"+pairs.getValue()+"},");
 	        it.remove(); // avoids a ConcurrentModificationException
 	        
 	       // coll.update(q, o)
@@ -91,17 +95,18 @@ public class Document {
 	    }
 			
 	}
-	public static void getMapReduceWord() throws Exception{
+	public static void getMapReduceWord() throws Exception
+	{
 		DB db = MongoDBJDBC.connectToMongo();
 		DBCollection coll = db.getCollection("documents");
-		String map="function() {this.document.forEach(function(z){emit( z.word, z.count )});}";
+		String map="function() {this."+document+".forEach(function(z){emit( z."+word+", z.count )});}";
 		String reduce="function(key, values) {"+
 					"  var total = 0;"+
 					" values.forEach(function(z){total += z;});"+
 					"  return total;}";
-		MapReduceCommand cmd = new MapReduceCommand(coll, map, reduce, "wordcounts", MapReduceCommand.OutputType.REPLACE, null);
+		MapReduceCommand cmd = new MapReduceCommand(coll, map, reduce, wordcoll, MapReduceCommand.OutputType.REPLACE, null);
 		coll.mapReduce(cmd);
-		DBCollection wordcounts=db.getCollection("wordcounts");
+		DBCollection wordcounts=db.getCollection(wordcoll);
 		DBCursor cur=wordcounts.find().sort(new BasicDBObject("value",-1));
 		int counter=1;
 		try
@@ -114,6 +119,34 @@ public class Document {
 		        counter=counter+1;
 		        
 		        
+		    }
+		}
+		finally{
+			cur.close();
+		}
+	}
+	public static void getMapReduce2gram() throws Exception
+	{
+		DB db = MongoDBJDBC.connectToMongo();
+		DBCollection coll = db.getCollection("documents");
+		String map="function() {this."+gram+".forEach(function(z){emit( z."+twogram+", z.count )});}";
+		String reduce="function(key, values) {"+
+					"  var total = 0;"+
+					" values.forEach(function(z){total += z;});"+
+					"  return total;}";
+		MapReduceCommand cmd = new MapReduceCommand(coll, map, reduce, gramscoll, MapReduceCommand.OutputType.REPLACE, null);
+		coll.mapReduce(cmd);
+		DBCollection wordcounts=db.getCollection(gramscoll);
+		DBCursor cur=wordcounts.find().sort(new BasicDBObject("value",-1));
+		int counter=1;
+		try
+		{
+			while(cur.hasNext()) 
+			{
+		    	if (counter>20)
+		        	break;
+		        System.out.println(counter+":"+cur.next());
+		        counter=counter+1;     
 		    }
 		}
 		finally{
