@@ -18,7 +18,7 @@ public class BasicCrawler extends WebCrawler {
 	        "|avi|mov|mpe?g|ra?m|m4v|smil|wm?v|swf|aaf|asf|flv|mkv" +
 	        "|zip|rar|gz|7z|aac|ace|alz|apk|arc|arj|dmg|jar|lzip|lha)" +
 	        "(\\?.*)?$"); // For url Query parts ( URL?q=... )
-
+	private final static Pattern urlFilter= Pattern.compile("http://(www\\.)?(\\w+.)?ics\\.uci\\.edu(/)?(.+)?");
 	  /**
 	   * You should implement this function to specify whether the given url
 	   * should be crawled or not (based on your crawling logic).
@@ -27,7 +27,8 @@ public class BasicCrawler extends WebCrawler {
 	  public boolean shouldVisit(Page page, WebURL url) {
 	    String href = url.getURL().toLowerCase();
 
-	    return !BINARY_FILES_EXTENSIONS.matcher(href).matches() && href.startsWith("http://www.ics.uci.edu/");
+	  //  return !BINARY_FILES_EXTENSIONS.matcher(href).matches() && href.startsWith("http://www.ics.uci.edu/");
+	  return !BINARY_FILES_EXTENSIONS.matcher(href).matches() && urlFilter.matcher(href).matches();
 	  }
 
 	  /**
