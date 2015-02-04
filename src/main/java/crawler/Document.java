@@ -1,6 +1,7 @@
 package crawler;
 
 
+import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,7 +33,7 @@ public class Document {
 	private static final String wordcoll="wordcounts";
 	private static final String gramscoll="gramscount";
 	
-	public static void addDocument(String url,String text) throws Exception
+	public static void addDocument(String url,String subdomain,String text) throws Exception
 	{
 		 DB db = MongoDBJDBC.connectToMongo();
 		 DBCollection coll = db.getCollection("documents");
@@ -43,6 +44,7 @@ public class Document {
 		 Map<String,Integer> freq2gram=ComputeFrequency.computeTwoGramFrequencies(tokens);
 		 
 		 StringBuilder dson=new StringBuilder("{'url':'"+url+"',");
+		 dson.append("'subdomain':'"+subdomain+"',");
 		 dson.append(addfreq(freq,document,word)).append(",").append(addfreq(freq2gram,gram,twogram)).append("}");
 		 BasicDBObject query=(BasicDBObject) JSON.parse(dson.toString());
 		 
@@ -152,6 +154,19 @@ public class Document {
 		finally{
 			cur.close();
 		}
+	}
+	public static void subDomains() throws Exception
+	{
+		DB db = MongoDBJDBC.connectToMongo();
+		DBCollection coll = db.getCollection("documents");
+		PrintWriter writer = new PrintWriter("SubDomain.txt", "UTF-8");
+		List subd=coll.distinct("subdomain");
+		for(Object s:subd)
+		{
+			writer.println(s.toString());
+		}
+		writer.close();
+		
 	}
 	
 }

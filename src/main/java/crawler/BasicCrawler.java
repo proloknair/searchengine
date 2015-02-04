@@ -5,7 +5,7 @@ import java.util.regex.Pattern;
 
 import org.apache.http.Header;
 
-import textprocess.Subdomain;
+
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
@@ -45,13 +45,7 @@ public class BasicCrawler extends WebCrawler {
 	    String parentUrl = page.getWebURL().getParentUrl();
 	    String anchor = page.getWebURL().getAnchor();
 	    
-	    try {
-			Subdomain.addSubDomain(subDomain);
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+	
 	    
 
 	    logger.debug("Docid: {}", docid);
@@ -69,7 +63,7 @@ public class BasicCrawler extends WebCrawler {
 	      Set<WebURL> links = htmlParseData.getOutgoingUrls();
 	      
 	      try {
-			Document.addDocument(url, text);
+			Document.addDocument(url,subDomain, text);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

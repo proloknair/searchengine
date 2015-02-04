@@ -10,7 +10,7 @@ import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import textprocess.Subdomain;
+
 
 
 public class BasicCrawlController {
@@ -104,7 +104,7 @@ public class BasicCrawlController {
      * will reach the line after this only when crawling is finished.
      */
     controller.start(BasicCrawler.class, numberOfCrawlers);
-    Subdomain.aggregatestore();
+    Document.subDomains();
     Document.getMapReduceWord();
     Document.getMapReduce2gram();
   }
