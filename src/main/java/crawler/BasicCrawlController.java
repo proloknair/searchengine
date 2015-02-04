@@ -105,5 +105,6 @@ public class BasicCrawlController {
      */
     controller.start(BasicCrawler.class, numberOfCrawlers);
     Subdomain.aggregatestore();
+    Document.getAggregateData();
   }
 }

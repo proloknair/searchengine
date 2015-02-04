@@ -62,7 +62,19 @@ public class Tokenize {
 			
 		return tokenslist;
 	}
-	
+	/*public static String tokenizeStringjson(String text) throws IOException
+	{
+		StringBuilder tokenlist=new StringBuilder();
+		Matcher m;
+				m = Pattern.compile("[a-zA-Z0-9]+").matcher(text); //using regex to find all the tokens
+				while(m.find())
+				{
+					tokenslist.add(m.group().toLowerCase()); //adding everything to tokenlist
+				}
+			
+		return tokenslist;
+	}
+	*/
 	/*
 	public static void main(String[] args) throws IOException {
 		long startTime = System.nanoTime();
