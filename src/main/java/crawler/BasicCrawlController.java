@@ -50,7 +50,7 @@ public class BasicCrawlController {
      * You can set the maximum crawl depth here. The default value is -1 for
      * unlimited depth
      */
-    config.setMaxDepthOfCrawling(3);
+    config.setMaxDepthOfCrawling(10);
 
     /*
      * You can set the maximum number of pages to crawl. The default value
@@ -105,7 +105,8 @@ public class BasicCrawlController {
      */
     controller.start(BasicCrawler.class, numberOfCrawlers);
     Document.subDomains();
+    
     Document.getMapReduceWord();
-    Document.getMapReduce2gram();
+   Document.getMapReduce2gram();
   }
 }

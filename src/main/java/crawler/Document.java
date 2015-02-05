@@ -42,14 +42,18 @@ public class Document {
 		 List<String> tokens=Tokenize.tokenizeString(text);
 		 Map<String,Integer> freq=ComputeFrequency.computeWordFrequencies(tokens);
 		 Map<String,Integer> freq2gram=ComputeFrequency.computeTwoGramFrequencies(tokens);
-		 
-		 StringBuilder dson=new StringBuilder("{'url':'"+url+"',");
+		 int sizeToken=tokens.size();
+		 if(sizeToken>=2)
+		 { StringBuilder dson=new StringBuilder("{'url':'"+url+"',");
 		 dson.append("'subdomain':'"+subdomain+"',");
+		 dson.append("'count':'"+sizeToken+"',");
+		 
 		 dson.append(addfreq(freq,document,word)).append(",").append(addfreq(freq2gram,gram,twogram)).append("}");
 		 BasicDBObject query=(BasicDBObject) JSON.parse(dson.toString());
 		 
 		 
 		 coll.insert(query);
+		 }
 	}
 	private static String addfreq(Map<String,Integer> fcount,String name,String nestedname)
 	{
@@ -161,6 +165,7 @@ public class Document {
 		DBCollection coll = db.getCollection("documents");
 		PrintWriter writer = new PrintWriter("SubDomain.txt", "UTF-8");
 		List subd=coll.distinct("subdomain");
+		
 		for(Object s:subd)
 		{
 			writer.println(s.toString());
