@@ -164,6 +164,7 @@ public class Document {
 		DB db = MongoDBJDBC.connectToMongo();
 		DBCollection coll = db.getCollection("documents");
 		PrintWriter writer = new PrintWriter("SubDomain.txt", "UTF-8");
+		
 		List subd=coll.distinct("subdomain");
 		
 		for(Object s:subd)
@@ -171,6 +172,17 @@ public class Document {
 			writer.println(s.toString());
 		}
 		writer.close();
+		
+	}
+	public static void uniqueUrls() throws Exception
+	{
+		DB db =MongoDBJDBC.connectToMongo();
+		DBCollection coll=db.getCollection("documents");
+		DBObject sortbyWordCount = new BasicDBObject("count",-1);
+		System.out.println("Number of unique urls:"+coll.distinct("url").size());
+		
+		DBCursor iter = coll.find().sort(sortbyWordCount).limit(1);
+		System.out.println("The longest page has "+iter.next().get("count"));
 		
 	}
 	

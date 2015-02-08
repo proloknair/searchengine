@@ -28,7 +28,7 @@ public class BasicCrawlController {
      * crawlStorageFolder is a folder where intermediate crawl data is
      * stored.
      */
-    String crawlStorageFolder = "/Users/proloknair/Dropbox/IR-Proj/crawl";
+    String crawlStorageFolder = "./Data";
 
     /*
      * numberOfCrawlers shows the number of concurrent threads that should
@@ -44,19 +44,20 @@ public class BasicCrawlController {
      * Be polite: Make sure that we don't send more than 1 request per
      * second (1000 milliseconds between requests).
      */
-    config.setPolitenessDelay(1000);
+    config.setPolitenessDelay(500);
+    config.setUserAgentString("UCI WebCrawler 66008474 62805822");
 
     /*
      * You can set the maximum crawl depth here. The default value is -1 for
      * unlimited depth
      */
-    config.setMaxDepthOfCrawling(10);
+    config.setMaxDepthOfCrawling(80);
 
     /*
      * You can set the maximum number of pages to crawl. The default value
      * is -1 for unlimited number of pages
      */
-    config.setMaxPagesToFetch(3);
+    config.setMaxPagesToFetch(8000);
 
     /**
      * Do you want crawler4j to crawl also binary data ?
@@ -108,5 +109,7 @@ public class BasicCrawlController {
     
     Document.getMapReduceWord();
    Document.getMapReduce2gram();
+   BasicCrawler.printMap(); 
+   Document.uniqueUrls();
   }
 }

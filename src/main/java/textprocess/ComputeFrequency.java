@@ -15,7 +15,7 @@ import java.util.Set;
 public class ComputeFrequency {
 	private static int longestpalindrome=17826; //length of the longest existing palindrome phrase
 	private static Set<String> stopWords=null;
-	private static final String StopFile="/Users/proloknair/Dropbox/IR-Proj/SearchEngine/StopWords.txt";
+	private static final String StopFile="/Users/mvrao/searchengine/StopWords.txt";
 	private static void InitializeStopWords() throws IOException
 	{
 		
