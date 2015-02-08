@@ -113,7 +113,7 @@ public class Document {
 		MapReduceCommand cmd = new MapReduceCommand(coll, map, reduce, wordcoll, MapReduceCommand.OutputType.REPLACE, null);
 		coll.mapReduce(cmd);
 		DBCollection wordcounts=db.getCollection(wordcoll);
-		DBCursor cur=wordcounts.find().sort(new BasicDBObject("value",-1));
+		DBCursor cur=wordcounts.find().sort(new BasicDBObject("value",-1)).limit(500);
 		int counter=1;
 		try
 		{
@@ -143,7 +143,7 @@ public class Document {
 		MapReduceCommand cmd = new MapReduceCommand(coll, map, reduce, gramscoll, MapReduceCommand.OutputType.REPLACE, null);
 		coll.mapReduce(cmd);
 		DBCollection wordcounts=db.getCollection(gramscoll);
-		DBCursor cur=wordcounts.find().sort(new BasicDBObject("value",-1));
+		DBCursor cur=wordcounts.find().sort(new BasicDBObject("value",-1)).limit(20);
 		int counter=1;
 		try
 		{

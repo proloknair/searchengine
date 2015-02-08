@@ -57,9 +57,15 @@ public class BasicCrawler extends WebCrawler {
 	  return !BINARY_FILES_EXTENSIONS.matcher(href).matches() && domain1.endsWith(".ics.uci.edu")
 			  && !href.startsWith("http://archive.ics.uci.edu/")
 				&& !href.startsWith("http://calendar.ics.uci.edu/")
+				&& !href.startsWith("https://calendar.ics.uci.edu/")
+				&& !href.startsWith("http://flamingo.ics.uci.edu/releases")
+				&& !href.startsWith("http://ironwood.ics.uci.edu/")
 				&& !href.startsWith("http://drzaius.ics.uci.edu/")
-				&& !href.startsWith("http://fano.ics.uci.edu/")
-				&& !href.startsWith("http://djp3-pc2.ics.uci.edu/");
+				&& !href.startsWith("http://duttgroup.ics.uci.edu/")
+				&& !href.startsWith("https://duttgroup.ics.uci.edu/")
+				&& !href.startsWith("http://fano.ics.uci.edu/ca/")
+				&& !href.startsWith("http://calendar.ics.uci.edu/")
+				&& !href.startsWith("http://djp3-pc2.ics.uci.edu/LUCICodeRespository/");
 	  }
 
 	  /**
