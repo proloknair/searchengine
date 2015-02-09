@@ -14,6 +14,8 @@ public class MongoDBJDBC{
 	    DB db=client.getDB("Crawler");
 	   // db.getCollection("subdomain").drop();
 	  //  db.getCollection("documents").drop();
+	    
 	    return db;
 		}
+
 	}

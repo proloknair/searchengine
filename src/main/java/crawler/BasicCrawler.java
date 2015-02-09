@@ -65,7 +65,8 @@ public class BasicCrawler extends WebCrawler {
 				&& !href.startsWith("https://duttgroup.ics.uci.edu/")
 				&& !href.startsWith("http://fano.ics.uci.edu/ca/")
 				&& !href.startsWith("http://calendar.ics.uci.edu/")
-				&& !href.startsWith("http://djp3-pc2.ics.uci.edu/LUCICodeRespository/");
+				&& !href.startsWith("http://djp3-pc2.ics.uci.edu/LUCICodeRespository/")
+	  && !href.startsWith("http://wics.ics.uci.edu");
 	  }
 
 	  /**

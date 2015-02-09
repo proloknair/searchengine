@@ -95,7 +95,7 @@ public class Document {
 	    List<DBObject> pipeline = Arrays.asList(unwind, group, sort,limit);
 	    Cursor output = coll.aggregate(pipeline,agg);
 	    int counter=1;
-	    PrintWriter writer = new PrintWriter("CommonWords.txt", "UTF-8");
+	    PrintWriter writer = new PrintWriter("CommonWords_I.txt", "UTF-8");
 	    while (output.hasNext()) {
 	    	if (counter>500)
 	        	break;
@@ -127,7 +127,7 @@ public class Document {
 	    List<DBObject> pipeline = Arrays.asList(unwind, group, sort,limit);
 	    Cursor output = coll.aggregate(pipeline,agg);
 	    int counter=1;
-	    PrintWriter writer = new PrintWriter("TwoGrams.txt", "UTF-8");
+	    PrintWriter writer = new PrintWriter("TwoGrams_I.txt", "UTF-8");
 	    while (output.hasNext()) {
 	    	
 	    	if (counter>20)
@@ -159,7 +159,7 @@ public class Document {
 	    List<DBObject> pipeline = Arrays.asList(group, sort);
 	    Cursor output = coll.aggregate(pipeline,agg);
 	    int counter=1;
-	    PrintWriter writer = new PrintWriter("SubDomain.txt", "UTF-8");
+	    PrintWriter writer = new PrintWriter("SubDomain_I.txt", "UTF-8");
 	    while (output.hasNext()) {
 	    	
 	    	
