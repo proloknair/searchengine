@@ -14,9 +14,11 @@ import textprocess.ComputeFrequency;
 import textprocess.Tokenize;
 import mongo.MongoDBJDBC;
 
+import com.mongodb.AggregationOptions;
 import com.mongodb.AggregationOutput;
 import com.mongodb.BasicDBObject;
 import com.mongodb.BulkWriteOperation;
+import com.mongodb.Cursor;
 import com.mongodb.DB;
 import com.mongodb.DBCollection;
 import com.mongodb.DBCursor;
@@ -86,19 +88,90 @@ public class Document {
 	    
 	    DBObject sortFields = new BasicDBObject("count", -1);
 	    DBObject sort = new BasicDBObject("$sort", sortFields );
+	    DBObject limit=new BasicDBObject("$limit",500);
+	    AggregationOptions agg = AggregationOptions.builder().allowDiskUse(true).build();
 
 	   
-	    List<DBObject> pipeline = Arrays.asList(unwind, group, sort);
-	    AggregationOutput output = coll.aggregate(pipeline);
+	    List<DBObject> pipeline = Arrays.asList(unwind, group, sort,limit);
+	    Cursor output = coll.aggregate(pipeline,agg);
 	    int counter=1;
-	    for (DBObject result : output.results()) {
+	    PrintWriter writer = new PrintWriter("CommonWords.txt", "UTF-8");
+	    while (output.hasNext()) {
 	    	if (counter>500)
 	        	break;
-	        System.out.println(counter+":"+result);
+	        writer.println(counter+":"+output.next().toString());
 	        counter=counter+1;
 	        
 	        
 	    }
+	    writer.close();
+	    
+			
+	}
+	public static void getAggregate2gram() throws Exception{
+		DB db = MongoDBJDBC.connectToMongo();
+		DBCollection coll = db.getCollection("documents");
+		DBObject unwind=new BasicDBObject("$unwind","$gram");
+		DBObject groupFields = new BasicDBObject( "_id", "$gram.twogram");
+
+		
+	    groupFields.put("count", new BasicDBObject( "$sum", "$gram.count"));
+	    DBObject group = new BasicDBObject("$group", groupFields );
+	    
+	    DBObject sortFields = new BasicDBObject("count", -1);
+	    DBObject sort = new BasicDBObject("$sort", sortFields );
+	    DBObject limit=new BasicDBObject("$limit",20);
+	    AggregationOptions agg = AggregationOptions.builder().allowDiskUse(true).build();
+
+	   
+	    List<DBObject> pipeline = Arrays.asList(unwind, group, sort,limit);
+	    Cursor output = coll.aggregate(pipeline,agg);
+	    int counter=1;
+	    PrintWriter writer = new PrintWriter("TwoGrams.txt", "UTF-8");
+	    while (output.hasNext()) {
+	    	
+	    	if (counter>20)
+	        	break;
+	        writer.println(counter+":"+output.next().toString());
+	        counter=counter+1;
+	        
+	        
+	    }
+	    
+	    writer.close();
+	}
+	public static void getAggregateSubdomain() throws Exception{
+		DB db = MongoDBJDBC.connectToMongo();
+		DBCollection coll = db.getCollection("documents");
+		
+		DBObject groupFields = new BasicDBObject( "_id", "$subdomain");
+
+		
+	    groupFields.put("count", new BasicDBObject( "$sum", 1));
+	    DBObject group = new BasicDBObject("$group", groupFields );
+	    
+	    DBObject sortFields = new BasicDBObject("count", -1);
+	    DBObject sort = new BasicDBObject("$sort", sortFields );
+	   // DBObject limit=new BasicDBObject("$limit",20);
+	    AggregationOptions agg = AggregationOptions.builder().allowDiskUse(true).build();
+
+	   
+	    List<DBObject> pipeline = Arrays.asList(group, sort);
+	    Cursor output = coll.aggregate(pipeline,agg);
+	    int counter=1;
+	    PrintWriter writer = new PrintWriter("SubDomain.txt", "UTF-8");
+	    while (output.hasNext()) {
+	    	
+	    	
+	        DBObject it=output.next();
+	       
+	        
+	        
+	        writer.println("http://" + it.get("_id").toString() + ".uci.edu, " + it.get("count").toString());
+	        
+	        
+	    }
+	    writer.close();
 			
 	}
 	public static void getMapReduceWord() throws Exception
@@ -182,7 +255,9 @@ public class Document {
 		System.out.println("Number of unique urls:"+coll.distinct("url").size());
 		
 		DBCursor iter = coll.find().sort(sortbyWordCount).limit(1);
-		System.out.println("The longest page has "+iter.next().get("count"));
+		DBObject it=iter.next();
+		System.out.println("Longest page:"+it.get("url").toString());
+        System.out.println("count:"+it.get("count").toString() );
 		
 	}
 	

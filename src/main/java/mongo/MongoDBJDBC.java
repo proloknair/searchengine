@@ -12,8 +12,8 @@ public class MongoDBJDBC{
 	    }       
 	    client = new MongoClient("localhost" , 27017);                
 	    DB db=client.getDB("Crawler");
-	    db.getCollection("subdomain").drop();
-	    db.getCollection("documents").drop();
+	   // db.getCollection("subdomain").drop();
+	  //  db.getCollection("documents").drop();
 	    return db;
-	}
+		}
 	}
